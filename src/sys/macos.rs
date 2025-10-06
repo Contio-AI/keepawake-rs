@@ -4,11 +4,11 @@
 //!
 //! [`IOPMAssertionCreateWithName`]: https://developer.apple.com/documentation/iokit/1557134-iopmassertioncreatewithname
 
-use objc2_io_kit::{
-    kIOPMAssertionLevelOn, kIOReturnSuccess, IOPMAssertionCreateWithName,
-    IOPMAssertionRelease, IOPMAssertionID,
-};
 use objc2_core_foundation::CFString;
+use objc2_io_kit::{
+    kIOPMAssertionLevelOn, kIOReturnSuccess, IOPMAssertionCreateWithName, IOPMAssertionID,
+    IOPMAssertionRelease,
+};
 use thiserror::Error;
 
 use crate::Options;
@@ -53,7 +53,8 @@ impl KeepAwake {
     fn set(&mut self) -> Result<(), Error> {
         if self.options.display {
             unsafe {
-                let assertion_type = CFString::from_static_str(kIOPMAssertionTypePreventUserIdleDisplaySleep);
+                let assertion_type =
+                    CFString::from_static_str(kIOPMAssertionTypePreventUserIdleDisplaySleep);
                 let assertion_name = CFString::from_str(&self.options.reason);
                 let result = IOPMAssertionCreateWithName(
                     Some(&assertion_type),
@@ -69,7 +70,8 @@ impl KeepAwake {
 
         if self.options.idle {
             unsafe {
-                let assertion_type = CFString::from_static_str(kIOPMAssertionTypePreventUserIdleSystemSleep);
+                let assertion_type =
+                    CFString::from_static_str(kIOPMAssertionTypePreventUserIdleSystemSleep);
                 let assertion_name = CFString::from_str(&self.options.reason);
                 let result = IOPMAssertionCreateWithName(
                     Some(&assertion_type),
@@ -85,7 +87,8 @@ impl KeepAwake {
 
         if self.options.sleep {
             unsafe {
-                let assertion_type = CFString::from_static_str(kIOPMAssertionTypePreventSystemSleep);
+                let assertion_type =
+                    CFString::from_static_str(kIOPMAssertionTypePreventSystemSleep);
                 let assertion_name = CFString::from_str(&self.options.reason);
                 let result = IOPMAssertionCreateWithName(
                     Some(&assertion_type),
